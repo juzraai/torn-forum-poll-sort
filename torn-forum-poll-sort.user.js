@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Torn Forum Poll Sort
-// @version      1.0.1
+// @version      1.1.0
 // @description  Sorts forum poll options by vote on TORN.
 // @author       juzraai
 // @license      MIT
@@ -40,10 +40,18 @@ function add() {
 function sortVotes() {
 	const ul = document.querySelector('.forums-vote-wrap ul');
 	let lis = ul.querySelectorAll('li:not(.sort):not(.title)');
-	[...lis].forEach(li => li.remove());
+	let max = 0;
+	let min = null;
+	[...lis].forEach(li => {
+		li.remove();
+		const v = parseVotes(li)
+		max = Math.max(v, max);
+		min = Math.min(v, min || v)
+	});
 	lis = [...lis].sort((a, b) => parseVotes(b) - parseVotes(a));
 	lis.forEach((li, i) => {
 		li.querySelector('.percents').innerHTML += ` #${i + 1}`;
+		li.querySelector('.progress').style.width = (100 * (parseVotes(li) - min) / (max - min)) + '%';
 		ul.append(li)
 	});
 }
