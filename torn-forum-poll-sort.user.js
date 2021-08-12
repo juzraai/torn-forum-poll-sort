@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Torn Forum Poll Sort
-// @version      1.0.0
+// @version      1.0.1
 // @description  Sorts forum poll options by vote on TORN.
 // @author       juzraai
 // @license      MIT
@@ -19,7 +19,8 @@
 
 function add() {
 	const ul = document.querySelector('.forums-vote-wrap ul');
-	if (!ul) return;
+	const submit = document.querySelector('.forums-vote-wrap input[type=submit]');
+	if (!ul || submit) return;
 
 	const btn = document.createElement('a');
 	btn.setAttribute('href', 'javascript:void(0)');
@@ -38,7 +39,7 @@ function add() {
 
 function sortVotes() {
 	const ul = document.querySelector('.forums-vote-wrap ul');
-	let lis = document.querySelectorAll('.forums-vote-wrap ul li:not(.sort):not(.title)');
+	let lis = ul.querySelectorAll('li:not(.sort):not(.title)');
 	[...lis].forEach(li => li.remove());
 	lis = [...lis].sort((a, b) => parseVotes(b) - parseVotes(a));
 	lis.forEach((li, i) => {
