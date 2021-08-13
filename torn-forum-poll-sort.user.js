@@ -48,7 +48,7 @@ function sortOptions() {
 		li.remove();
 		const v = parseVoteCount(li)
 		max = Math.max(v, max);
-		min = Math.min(v, min || v)
+		min = Math.min(v, min === null ? v : min);
 	});
 	lis = [...lis].sort((a, b) => parseVoteCount(b) - parseVoteCount(a));
 	lis.forEach((li, i) => {
